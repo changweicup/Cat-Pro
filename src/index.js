@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import HomePage from "./home"
+import Index from './router/Index'
+import './app.less'
+
 class App extends React.Component {
     render(){
         return (
             <div>
-                <HomePage />
+                <Index />
             </div>
         )
     }

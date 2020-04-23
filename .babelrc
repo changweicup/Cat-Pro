@@ -10,9 +10,14 @@
   ],
   "plugins": [
     ["@babel/plugin-transform-runtime",{
-      "corejs": 2,
       "useBuildIns":"usage"
-    }]
-
+    }],
+    "@babel/plugin-proposal-class-properties",
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": "css"
+    }],
+    "react-html-attrs"
   ]
 }
