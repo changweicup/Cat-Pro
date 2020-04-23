@@ -1,6 +1,7 @@
 import React , {Component} from "react"
 import { Link , withRouter } from "react-router-dom"
-import { Menu, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Menu } from 'antd';
 import routes from '../../config/routers'
 const { SubMenu } = Menu;
 
@@ -10,7 +11,7 @@ class SliderMenu extends Component {
     renderMenuItem = (item) => (
         <Menu.Item key={`${item.path}`}>
             <Link to={item.path}>
-                {item.icon ? <Icon type={`${item.icon}`} /> : null}
+                {item.icon ? <LegacyIcon type={`${item.icon}`} /> : null}
                 <span>{item.title}</span>
             </Link>
         </Menu.Item>
@@ -23,14 +24,14 @@ class SliderMenu extends Component {
                         key={item.path} 
                         title={
                             <span>
-                                <Icon type={`${item.icon}`} />
+                                <LegacyIcon type={`${item.icon}`} />
                                 <span>{item.title}</span>
                             </span>
                         }
                 >
                     {item.childern.map(data=>this.renderMenuItem(data))}
                 </SubMenu>
-            )
+            );
         }else{
             return this.renderMenuItem(item)
         }
@@ -55,6 +56,6 @@ class SliderMenu extends Component {
         );
     }
 
-} 
+}
 
 export default withRouter(SliderMenu);
