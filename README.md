@@ -6,6 +6,10 @@ react + webpack + mobx + mock整合雏形项目
 npm install
 ````
 
+启动 mock 数据
+````
+npm run mock
+````
 
 启动开发环境
 ````
