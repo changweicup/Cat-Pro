@@ -1,5 +1,5 @@
 # cat-pro
-react + webpack + mobx + mock整合雏形项目
+webpack打包优化
 
 安装依赖
 ````
