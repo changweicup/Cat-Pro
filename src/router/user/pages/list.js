@@ -1,71 +1,54 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
-import { Table, Badge } from "antd"
-import { inject, observer } from "mobx-react"
+import {Button,Table,Switch} from "antd"
+import { inject , observer} from "mobx-react"
 
-@inject("UserListStore")
-@observer
+@inject("UserListStore") // 注入mobx实例到props
+@observer // UserListStore实例和组件双向绑定
 class UserListPage extends React.Component {
 
-    componentDidMount() {
-        const { UserListStore } = this.props;
+    componentDidMount(){
+        const {UserListStore} = this.props;
         UserListStore.getUserList();
     }
-
-    push = ()=>{
-        this.props.history.push("/user/add?name=231");
+    columns = (columns)=>{
+        return columns.map((item)=>{
+            item.align = "center";
+            if(item.key === 'index'){
+                item.render = (row,data,index)=>{
+                    return <p>{index + 1}</p>
+                }
+            }else if(item.key === "status"){
+                item.render = (row,data)=>{
+                    return <Switch checked={row} onChange={()=>this.onSwitchChange(data)}/>
+                }
+            }else if(item.key === "avatar"){
+                item.render = (row)=>{
+                    return <img src={row} alt="" class="avatar"/>
+                }
+            }
+            return item;
+        })
     };
-
-
-
-    setName = ()=>{
-        const { UserListStore } = this.props;
-        UserListStore.setName('ha ha ha');
+    onSwitchChange = (item)=>{
+        const {UserListStore} = this.props;
+        UserListStore.updateStatus(item.id,!item.status)
     };
-
+    addUser = () => {
+        this.props.history.push("/user/add")
+    };
     render(){
-        const { UserListStore } = this.props;
-
-        const column = [
-            {
-                title: '编号',
-                dataIndex: 'id',
-            },
-            {
-                title: '用户标识',
-                dataIndex: 'user_id',
-            },
-            {
-                title: '用户名',
-                dataIndex: 'user_name',
-            },
-            {
-                title: '状态',
-                dataIndex: 'status',
-                render: (text) => text? <Badge status="success" /> : <Badge status="error" />
-            },
-            {
-                title: '头像',
-                dataIndex: 'avatar',
-                render: text => <img src={text} alt='' style={{ width: 20 }} />
-            },
-            {
-                title: '创建时间',
-                dataIndex: 'create_time',
-            },
-
-        ];
-        console.log(UserListStore.userList);
+        const {UserListStore} = this.props;
         return (
-            <div>
-                <Table
-                    rowKey='id'
-                    columns={column}
-                    dataSource={UserListStore.userList}
-                />
+            <div class="user-list-page">
+                <div class="buttons-box">
+                    <Button type="primary" size="large" onClick={this.addUser}>添加用户</Button>
+                </div>
+                <Table bordered columns={this.columns(UserListStore.userListColumns)} dataSource={UserListStore.userList} rowKey={(record=>record.id)}/>
             </div>
         )
     }
 }
 
-export default withRouter(UserListPage);
+export default UserListPage;
+
